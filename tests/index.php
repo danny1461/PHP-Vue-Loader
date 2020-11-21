@@ -30,7 +30,7 @@
 			require __DIR__ . '/../src/VueLoader.php';
 
 			$vueFiles = glob(__DIR__ . '/vue-components/*.vue');
-			VueLoader::Render($vueFiles, '#vue-app');
+			VueLoader::render($vueFiles, '#vue-app');
 		?>
 	</body>
 </html>

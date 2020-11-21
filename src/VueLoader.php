@@ -146,12 +146,12 @@ class VueLoader {
 	
 	private static function loadUtilCode() {
 		if (self::$utilsLoaded) {
-			return;
+			return '';
 		}
 
 		self::$utilsLoaded = true;
 
-		echo "var phpVueLoader = (function(){
+		return "var phpVueLoader = (function(){
 	var result = {};
 
 	function cloneOptions(val) {
@@ -238,7 +238,7 @@ class VueLoader {
 })();";
 	}
 
-    public static function Render($vueFiles, string $handleElement = '') {
+	private static function processInput($vueFiles) {
 		if (!$vueFiles) {
 			return;
 		}
@@ -253,7 +253,11 @@ class VueLoader {
 			}
 		}
 
-		$componentsToRender = array_intersect_key(self::$loadedComponents, array_flip($vueFiles));
+		return array_intersect_key(self::$loadedComponents, array_flip($vueFiles));
+	}
+
+    public static function render($vueFiles, string $handleElement = '') {
+		$componentsToRender = self::processInput($vueFiles);
 		if (count($componentsToRender)) {
 			echo '<style>';
 			foreach ($componentsToRender as $meta) {
@@ -264,7 +268,7 @@ class VueLoader {
 			echo '<script type="text/javascript">';
 			foreach ($componentsToRender as $meta) {
 				if (isset($meta['utilsNeeded'])) {
-					self::loadUtilCode();
+					echo self::loadUtilCode();
 				}
 
 				echo $meta['script'];
@@ -286,6 +290,34 @@ class VueLoader {
 	})();
 </script>";
 		}
+	}
+
+	public static function getStyles($vueFiles) {
+		$result = '';
+		$componentsToRender = self::processInput($vueFiles);
+		if (count($componentsToRender)) {
+			foreach ($componentsToRender as $meta) {
+				$result .= implode('', $meta['styles']);
+			}
+		}
+
+		return $result;
+	}
+
+	public static function getScripts($vueFiles) {
+		$result = '';
+		$componentsToRender = self::processInput($vueFiles);
+		if (count($componentsToRender)) {
+			foreach ($componentsToRender as $meta) {
+				if (isset($meta['utilsNeeded'])) {
+					$result .= self::loadUtilCode();
+				}
+
+				$result .= $meta['script'];
+			}
+		}
+
+		return $result;
 	}
 
 	public static function ResetFlags() {
