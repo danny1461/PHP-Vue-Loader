@@ -1,0 +1,6 @@
+{
+    "require": {
+        "imangazaliev/didom": "^1.16",
+        "sabberworm/php-css-parser": "*"
+    }
+}
