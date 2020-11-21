@@ -200,21 +200,25 @@ class VueLoader {
 	function makeNewContext(context) {
 		var result = {};
 
-		for (let i in context) {
-			Object.defineProperty(result, i, {
-				get: function() {
-					return context[i]
-				}
-			});
-		}
-
-		for (let i = 0; i < makeNewContext.props.length; i++) {
-			for (let j in context[makeNewContext.props[i]]) {
-				Object.defineProperty(result, j, {
+		for (var i in context) {
+			(function(i) {
+				Object.defineProperty(result, i, {
 					get: function() {
-						return context[makeNewContext.props[i]][j];
+						return context[i]
 					}
 				});
+			})(i);
+		}
+
+		for (var i = 0; i < makeNewContext.props.length; i++) {
+			for (var j in context[makeNewContext.props[i]]) {
+				(function(i, j) {
+					Object.defineProperty(result, j, {
+						get: function() {
+							return context[makeNewContext.props[i]][j];
+						}
+					});
+				})(i, j);
 			}
 		}
 
@@ -280,13 +284,21 @@ class VueLoader {
 			echo "
 <script>
 	(function() {
-		new Vue({
-			el: '{$handleElement}',
-			mounted: function() {
-				this.\$el.className += ' vue-initialized';
-				this.\$el.dataset.vue = this;
-			}
-		});
+		function start() {
+			new Vue({
+				el: '{$handleElement}',
+				mounted: function() {
+					this.\$el.className += ' vue-initialized';
+					this.\$el.dataset.vue = this;
+				}
+			});
+		}
+
+		if (document.readyState != 'loading'){
+			start();
+		} else {
+			document.addEventListener('DOMContentLoaded', start);
+		}
 	})();
 </script>";
 		}

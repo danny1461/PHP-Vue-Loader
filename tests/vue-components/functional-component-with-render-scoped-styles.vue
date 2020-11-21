@@ -4,7 +4,7 @@ export default {
 
 	props: ['msg'],
 
-	render(h, context) {
+	render: function(h, context) {
 		return h('div', ['Functional component with render scoped styles. Prop: ', context.props.msg]);
 	}
 }

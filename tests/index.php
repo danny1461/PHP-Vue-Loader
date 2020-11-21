@@ -14,6 +14,13 @@
 		</style>
 	</head>
 	<body>
+		<?php
+			require __DIR__ . '/../src/VueLoader.php';
+
+			$vueFiles = glob(__DIR__ . '/vue-components/*.vue');
+			VueLoader::render($vueFiles, '#vue-app');
+		?>
+		
 		<div id="vue-app">
 			<different-name-than-file-slightly></different-name-than-file-slightly>
 			<functional-component-with-template msg="Hello"></functional-component-with-template>
@@ -25,12 +32,5 @@
 			<render-function-scoped-style></render-function-scoped-style>
 			<deep-selector></deep-selector>
 		</div>
-
-		<?php
-			require __DIR__ . '/../src/VueLoader.php';
-
-			$vueFiles = glob(__DIR__ . '/vue-components/*.vue');
-			VueLoader::render($vueFiles, '#vue-app');
-		?>
 	</body>
 </html>
