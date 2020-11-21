@@ -7,3 +7,9 @@
 		content: 'From global-styles component';
 	}
 </style>
+
+<style scoped>
+	div {
+		font-style: italic;
+	}
+</style>
