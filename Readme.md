@@ -2,6 +2,8 @@
 
 Has basic functionality to process *.vue files and output them as batched `<style>` and `<script>` tags.
 
+Please end your script tags with `export default` or `return`. The `export default`s will be converted to a return statement so make sure you've defined everything else you need above.
+
 ## Caveats
  - Use `v-on` syntax in favor of `@`. The `@` is not a valid attribute character and will not be read by the parser
  - Use `v-slot` syntax in favor of `#`. Just like the `@`, `#` is skipped by the parser

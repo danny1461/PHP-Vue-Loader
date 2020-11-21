@@ -33,7 +33,7 @@ class VueLoader {
 						$template = $topLevelNode;
 						break;
 					case 'script':
-						$componentDefinition = str_replace('export default', 'return', $topLevelNode->text());
+						$componentDefinition = preg_replace('/export\\s+default/', 'return', $topLevelNode->text());
 						break;
 					case 'style':
 						$style = trim($topLevelNode->text());
@@ -89,7 +89,7 @@ class VueLoader {
 			}
 		}
 
-		$meta['script'] = '(function(){var obj=' . $componentDefinition . ';Vue.component(obj.name || "' . $fileName . '", obj);})();';
+		$meta['script'] = '(function(){var obj=' . $componentDefinition . ';Vue.component(obj.name || "' . $fileName . '", obj)})();';
 		self::$loadedComponents[$vueFile] = $meta;
     }
 
