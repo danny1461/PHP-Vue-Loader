@@ -5,13 +5,13 @@ export default {
 	props: ['msg'],
 
 	render(h, context) {
-		return h('div', 'Render function scoped styles');
+		return h('div', ['Functional component with render scoped styles. Prop: ', context.props.msg]);
 	}
 }
 </script>
 
 <style scoped>
 	div {
-		color: green;
+		color: orange;
 	}
 </style>

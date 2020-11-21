@@ -55,10 +55,6 @@ class VueLoader {
 			}
 		}
 
-		/* if ($template && $template->hasAttribute('functional')) {
-			throw new Exception('Functional components need to be implemented with a render function');
-		} */
-
 		if (is_null($componentDefinition)) {
 			$componentDefinition = 'return {}';
 		}
@@ -78,7 +74,7 @@ class VueLoader {
 				self::addAttributeToTemplate($template, $attr);
 			}
 			else {
-				$componentDefinition = '(function(){var obj=' . $componentDefinition . ',renderBak=obj.render;obj.render=phpVueLoader.render("' . $hash . '", renderBak);return obj})()';
+				$componentDefinition = '(function(){var obj=' . $componentDefinition . ';obj.render=phpVueLoader.render("' . $hash . '", obj.render);return obj})()';
 				$meta['utilsNeeded'] = true;
 			}
 		}

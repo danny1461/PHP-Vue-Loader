@@ -7,7 +7,7 @@
 
 <style scoped>
 	/* Can use '>>>' or '/deep/' or '::v-deep' */
-	div >>> .render-fn {
+	div >>> div {
 		margin-left: 20px;
 		color: blue;
 	}
