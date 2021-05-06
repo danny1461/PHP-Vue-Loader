@@ -2,6 +2,7 @@
 
 /**
  * VueLoader by Daniel Flynn
+ * https://github.com/danny1461/PHP-Vue-Loader
  */
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -110,7 +111,7 @@ class VueLoader {
     }
 
     private static function addAttributeToTemplate($node, $attr) {
-        if (!$node->isTextNode()) {
+        if (!$node->isTextNode() && !$node->isCommentNode()) {
             if ($node->tag != 'slot') {
                 $node->setAttribute($attr, null);
             }
@@ -136,7 +137,9 @@ class VueLoader {
                     $selector->setSelector($deepSelStr);
                 }
                 else {
-                    $selector->setSelector($selStr . $attr);
+					// TODO: Really really bad fix
+					// Should actually parse the selector and append at the right location
+                    $selector->setSelector(preg_replace('/::?(?:after|before)|$/', "{$attr}$0", $selStr, 1));
                 }
             }
         }
@@ -289,7 +292,6 @@ class VueLoader {
 				el: '{$handleElement}',
 				mounted: function() {
 					this.\$el.className += ' vue-initialized';
-					this.\$el.dataset.vue = this;
 				}
 			});
 		}
